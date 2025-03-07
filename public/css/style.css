@@ -1,0 +1,60 @@
+.user-image {
+    width: 50px;
+    height: 50px;
+}
+
+.cursor-pointer {
+    cursor: pointer
+}
+
+.button-like {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.offline-status {
+    color: red;
+}
+
+.online-status {
+    color: green;
+}
+
+.button-like:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.button-like img {
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.button-like:active {
+    transform: scale(0.98);
+}
+
+
+.chat-section {
+    display: none;
+}
+
+#chat-container {
+    background-color: aquamarine;
+    width: 100%;
+    height: 400px;
+    overflow-y: scroll;
+}
+
+.border {
+    margin-top: 10px;
+    width: 80%;
+    padding: 5px;
+}
