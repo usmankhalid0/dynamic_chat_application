@@ -1,8 +1,32 @@
-
 $(document).ready(function () {
     $('.user-list').click(function () {
+        var get_userId = $(this).attr('data-id');
+        receiver_id = get_userId;
+        $("#chat-container").html('');
         $('.start-head').hide();
         $('.chat-section').show();
+    });
+    $('#chat-form').submit(function (e) {
+        e.preventDefault();
+        var mesg = $('#message').val(); // .val() should be used to get the input value, not .value.
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            url: 'send', // Use the dynamic URL here
+            type: "POST",
+            data: { s_id: sender_id, r_id: receiver_id, msg: mesg },
+            success: function (res) {
+                if (res.success) {
+                    $('#message').val(''); // Clear the message input
+                    let chat = res.data.message;
+                    let html1 = "<div class='current-user-chat'>" + "<h3>" + chat + "</h3>" + "</div>";
+                    $("#chat-container").append(html1);
+                } else {
+                    alert(res.msge);
+                }
+            }
+        });
     });
 });
 Echo.join('status-update')
@@ -28,3 +52,11 @@ Echo.join('status-update')
     }).listen('UserStatusEvent', (ei) => {
         // console.log(ei);
     });
+Echo.private('broadcast-message').listen('.getchatMessage', (eventdata) => {
+    // console.log(eventdata + " sender_id" + sender_id + " receiverid " + eventdata.chat.receiver_id);
+    // console.log(sender_id + " " + eventdata.chat.receiver_id + "  " + receiver_id + " " + eventdata.chat.sender_id);
+    if (sender_id == eventdata.chat.receiver_id && receiver_id == eventdata.chat.sender_id) {
+        let html = "<div class='distance-user-chat'>" + "<h3>" + eventdata.chat.message + "</h3>" + "</div>";
+        $("#chat-container").append(html);
+    }
+});

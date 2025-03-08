@@ -53,6 +53,16 @@
     overflow-y: scroll;
 }
 
+.current-user-chat {
+    text-align: left;
+    margin: 30px;
+}
+
+.distance-user-chat {
+    text-align: right;
+    margin: 30px;
+}
+
 .border {
     margin-top: 10px;
     width: 80%;
