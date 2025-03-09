@@ -55,7 +55,9 @@ class HomeController extends Controller
                 $query->where('receiver_id','=',$request->sender_id)
                 ->orWhere('receiver_id','=',$request->receiver_id);
             })->get();
-            return response()->json(['success'=>true ,'data'=>$prechatdata]);
+            $s = User::where('id','=',$request->sender_id)->first(['name']);
+            $r = User::where('id','=',$request->receiver_id)->first(['name']);
+            return response()->json(['success'=>true ,'data'=>$prechatdata ,'s'=>$s->name,'r'=>$r->name]);
         }catch (Exception $e){
             return response()->json(['success'=>false ,'msg'=>$e->getMessage()]);
         }   

@@ -41,15 +41,18 @@ function loadOldchat() {
         success: function (result) {
             if (result.success) {
                 let chat = result.data;
+                let name = '';
                 let html4 = "";
                 for (x = 0; x < chat.length; x++) {
                     let addclass = '';
                     if (chat[x].sender_id == sender_id) {
                         addclass = "current-user-chat";
+                        name = result.s;
                     } else {
                         addclass = "distance-user-chat";
+                        name = result.r;
                     }
-                    html4 += "<div class='" + addclass + "'><h3>" + chat[x].message + "</h3></div>";
+                    html4 += "<div class='" + addclass + "'><h3>" + chat[x].message + "<sup >" + name + "</sup></h3></div>";
                 }
                 $("#chat-container").append(html4);
             }
