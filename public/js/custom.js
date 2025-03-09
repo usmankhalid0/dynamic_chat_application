@@ -5,6 +5,7 @@ $(document).ready(function () {
         $("#chat-container").html('');
         $('.start-head').hide();
         $('.chat-section').show();
+        loadOldchat();
     });
     $('#chat-form').submit(function (e) {
         e.preventDefault();
@@ -29,6 +30,35 @@ $(document).ready(function () {
         });
     });
 });
+function loadOldchat() {
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        url: 'loadOldChat',
+        type: 'POST',
+        data: { sender_id: sender_id, receiver_id: receiver_id },
+        success: function (result) {
+            if (result.success) {
+                let chat = result.data;
+                let html4 = "";
+                for (x = 0; x < chat.length; x++) {
+                    let addclass = '';
+                    if (chat[x].sender_id == sender_id) {
+                        addclass = "current-user-chat";
+                    } else {
+                        addclass = "distance-user-chat";
+                    }
+                    html4 += "<div class='" + addclass + "'><h3>" + chat[x].message + "</h3></div>";
+                }
+                $("#chat-container").append(html4);
+            }
+            else {
+                alert(result.msg);
+            }
+        }
+    });
+}
 Echo.join('status-update')
     .here((user) => {
         for (x = 0; x < user.length; x++) {

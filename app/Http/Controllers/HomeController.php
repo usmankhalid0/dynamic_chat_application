@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User ;
 use App\Models\Chat ;
 use App\Events\MassageEvent ;
+use Exception;
 
 class HomeController extends Controller
 {
@@ -43,5 +44,20 @@ class HomeController extends Controller
         } catch(\Exception $e) {
             return response()->json(['success' => false , 'msge' => $e->getMessage()]);
         }
+    }
+    public function loadchat(Request $request)
+    {
+        try{
+            $prechatdata = Chat::where(function ($query) use ($request){
+                $query->where('sender_id','=',$request->sender_id)
+                ->orWhere('sender_id','=',$request->receiver_id);
+            })->where(function ($query) use ($request){
+                $query->where('receiver_id','=',$request->sender_id)
+                ->orWhere('receiver_id','=',$request->receiver_id);
+            })->get();
+            return response()->json(['success'=>true ,'data'=>$prechatdata]);
+        }catch (Exception $e){
+            return response()->json(['success'=>false ,'msg'=>$e->getMessage()]);
+        }   
     }
 }

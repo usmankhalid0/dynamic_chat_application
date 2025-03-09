@@ -21,3 +21,5 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::POST('send', [App\Http\Controllers\HomeController::class, 'save'])->name('send');
+
+Route::post('loadOldChat', [App\Http\Controllers\HomeController::class, 'loadchat']);
